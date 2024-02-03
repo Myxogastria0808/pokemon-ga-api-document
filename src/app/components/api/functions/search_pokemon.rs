@@ -147,7 +147,7 @@ pub fn search_pokemon() -> Html {
 
     let search_input_style = style!(
         r#" 
-            width:603px;
+            width:500px;
             height:40px;
             box-shadow: 0px 0px 20px #ff0 ;
             background-color:#000;

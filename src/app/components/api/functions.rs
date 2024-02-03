@@ -54,7 +54,7 @@ fn design(props: &DesignContent) -> Html {
 
     html! {
         <div class={design_div_style}>
-            <a class={design_a_style} style="hover:cursor: pointer;" href={ props.url.clone() }>{ props.path.clone() }</a>
+            <a class={design_a_style} style="hover:cursor: pointer;" href={ props.url.clone() } target="_blank" rel="noopener noreferrer">{ props.path.clone() }</a>
             <h1 class={design_h1_style}>{ props.title.clone() }</h1>
         </div>
     }

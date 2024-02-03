@@ -42,7 +42,7 @@ pub fn app() -> Html {
     let container_style = style!(
         r#"
             width: 100%;
-            max-width: 1024px;
+            max-width: 900px;
             margin-right: auto;
             margin-left: auto;
         "#

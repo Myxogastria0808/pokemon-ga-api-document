@@ -1,30 +1,30 @@
 use stylist::style;
 use yew::prelude::*;
-// use yew_router::prelude::*;
+use yew_router::prelude::*;
 
-// #[derive(Clone, Routable, PartialEq)]
-// enum Route {
-//     #[at("/")]
-//     Root,
-//     #[at("/pokemon")]
-//     Pokemon,
-//     #[at("/generation")]
-//     Generation,
-// }
+#[derive(Clone, Routable, PartialEq)]
+enum Route {
+    #[at("/pokemon-ga-api-document")]
+    Root,
+    #[at("/pokemon-ga-api-document/pokemon")]
+    Pokemon,
+    #[at("/pokemon-ga-api-document/generation")]
+    Generation,
+}
 
-// impl Route {
-//     fn rooter(url: &String) -> Result<Route, String> {
-//         if url == "/" {
-//             Ok(Route::Root)
-//         } else if url == "/pokemon" {
-//             Ok(Route::Pokemon)
-//         } else if url == "/generation" {
-//             Ok(Route::Generation)
-//         } else {
-//             Err(String::from("Rooting error"))
-//         }
-//     }
-// }
+impl Route {
+    fn rooter(url: &String) -> Result<Route, String> {
+        if url == "/pokemon-ga-api-document" {
+            Ok(Route::Root)
+        } else if url == "/pokemon-ga-api-document/pokemon" {
+            Ok(Route::Pokemon)
+        } else if url == "/pokemon-ga-api-document/generation" {
+            Ok(Route::Generation)
+        } else {
+            Err(String::from("Rooting error"))
+        }
+    }
+}
 
 #[derive(Properties, PartialEq)]
 pub struct CardContent {
@@ -89,23 +89,18 @@ pub fn card(props: &CardContent) -> Html {
     )
     .expect("Failed to mount style");
 
-    // let navigator = use_navigator().unwrap();
-    if &props.url == "/" || &props.url == "/pokemon" || &props.url == "/generation" {
-        let url = if &props.url == "/" {
-            "http://127.0.0.1:8080/#api".to_string()
-        } else if &props.url == "/pokemon" {
-            "http://127.0.0.1:8080/pokemon#api".to_string()
-        } else if &props.url == "/generation" {
-            "http://127.0.0.1:8080/generation#api".to_string()
-        } else {
-            "http://127.0.0.1:8080/404".to_string()
-        };
-        // let onclick = Callback::from(move |_e: MouseEvent| {
-        //     navigator.push(match &Route::rooter(&url) {
-        //         Ok(_o) => _o,
-        //         Err(e) => panic!("{}", e),
-        //     })
-        // });
+    let navigator = use_navigator().unwrap();
+    if &props.url == "/pokemon-ga-api-document"
+        || &props.url == "/pokemon-ga-api-document/pokemon"
+        || &props.url == "/pokemon-ga-api-document/generation"
+    {
+        let url = props.url.clone();
+        let onclick = Callback::from(move |_| {
+            navigator.push(match &Route::rooter(&url) {
+                Ok(o_) => o_,
+                Err(e_) => panic!("{}", e_),
+            })
+        });
         html! {
             <>
                 <div
@@ -114,14 +109,13 @@ pub fn card(props: &CardContent) -> Html {
                 >
                     <h1 class={card_h1_style}>{ props.title.clone() }</h1>
                     <p class={card_p_style}>{ props.content.clone() }</p>
-                    // <button class={card_button_style} style="cursor:pointer" onclick={onclick}>{ "Detail" }</button>
-                    <a class={card_button_style} style="cursor:pointer" href={ url.clone() } >{ "Detail" }</a>
+                    <button class={card_button_style} style="cursor:pointer;" onclick={onclick}>{ "Detail" }</button>
                 </div>
             </>
         }
     } else {
         html! {
-            <p>{ "Unexcepted Error" }</p>
+            <></>
         }
     }
 }

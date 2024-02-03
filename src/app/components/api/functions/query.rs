@@ -9,7 +9,7 @@ pub fn card() -> Html {
             color:#fff;
             font-size:30px;
             font-family: 'Itim', cursive;
-            padding:60px 10px 10px 10px;
+            padding: 10px;
         "#
     )
     .expect("Failed to mount style");
@@ -40,9 +40,6 @@ pub fn card() -> Html {
             <p class={query_p_style}>
                 {"
                     / と /generation/{generation} には、上位何位(higher)から下位何位(lower)までのパーティ数を取得するという指定ができる。
-                "}
-                <br />
-                {"
                     何も指定しない場合は、1位から10位まで(?higher=1&lower=10)を取得するようになっている。
                 "}
             </p>

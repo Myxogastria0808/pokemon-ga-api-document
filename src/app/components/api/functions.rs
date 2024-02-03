@@ -1,11 +1,13 @@
 use archive::Archive;
 use latest::Latest;
+use query::Query;
 use search_pokemon::SearchPokemon;
 use stylist::style;
 use yew::prelude::*;
 
 mod archive;
 mod latest;
+mod query;
 mod search_pokemon;
 
 #[derive(Properties, PartialEq)]
@@ -72,6 +74,7 @@ pub fn fnctions(props: &Api) -> Html {
                     path={"/generation"}
                     title={"過去の世代"}
                 />
+                <Query />
                 <Archive />
             } else if api_types == *"latest" {
                 <Design
@@ -79,6 +82,7 @@ pub fn fnctions(props: &Api) -> Html {
                     path={"/latest"}
                     title={ "最新の世代" }
                 />
+                <Query />
                 <Latest />
             } else if api_types == *"search_pokemon" {
                 <Design

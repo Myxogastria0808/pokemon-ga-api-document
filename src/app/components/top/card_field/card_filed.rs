@@ -1,10 +1,8 @@
 use card::Card;
-use query::Query;
 use stylist::style;
 use yew::prelude::*;
 
 mod card;
-mod query;
 
 #[function_component(CardField)]
 pub fn card_flied() -> Html {
@@ -58,24 +56,23 @@ pub fn card_flied() -> Html {
                     <Card
                         title="/pokemon"
                         content="登録されているポケモンの詳細情報を得ることができる。"
-                        url="/pokemon"
+                        url="/pokemon-ga-api-document/pokemon"
                         img="https://raw.githubusercontent.com/pokemon-GA/pokemon-ga-api-document/main/assets/img/pexels-pixabay-206359.webp"
                     />
                     <Card
                         title="/latest"
                         content="計算が終了している世代の中で最新の世代の情報を取得できる。"
-                        url="/"
+                        url="/pokemon-ga-api-document"
                         img="https://raw.githubusercontent.com/pokemon-GA/pokemon-ga-api-document/main/assets/img/pexels-quang-nguyen-vinh-2131801.webp"
                     />
                     <Card
                         title="/generation"
                         content="計算が終了している過去の世代の情報を取得できる。"
-                        url="/generation"
+                        url="/pokemon-ga-api-document/generation"
                         img="https://raw.githubusercontent.com/pokemon-GA/pokemon-ga-api-document/main/assets/img/pexels-konevi-1335115.webp"
                     />
                 </div>
             </div>
-            <Query />
         </>
     }
 }

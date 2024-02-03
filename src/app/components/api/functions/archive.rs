@@ -171,23 +171,6 @@ pub fn archive() -> Html {
         "#
     )
     .expect("Failed to mount style");
-
-    // let latest_latest_generation_style = style!(
-    //     r#"
-    //         color: #fff;
-    //         font-size: 27px;
-    //         text-align: center;
-    //         margin-bottom: 15px;
-    //     "#
-    // )
-    // .expect("Failed to mount style");
-    // let latest_latest_generation_space_style = style!(
-    //     r#"
-    //         width: 100%;
-    //         height: 60px;
-    //     "#
-    // )
-    // .expect("Failed to mount style");
     let latest_ranking_style = style!(
         r#"
             color: #fff;

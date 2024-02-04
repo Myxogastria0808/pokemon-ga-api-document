@@ -238,6 +238,18 @@ pub fn latest() -> Html {
                 }
             }
             <div class={latest_space_style}></div>
+            <p>
+                {
+                    if let Some(error) = &state.error {
+                        match error {
+                            Error::DeserializeError => html! { "DeserializeError" },
+                            Error::RequestError => html! { "RequestError" },
+                        }
+                    } else {
+                        html! {}
+                    }
+                }
+            </p>
             {
                 if let Some(pokemon) = &state.data {
                     html! {
@@ -282,18 +294,6 @@ pub fn latest() -> Html {
                     html! {}
                 }
             }
-            <p>
-                {
-                    if let Some(error) = &state.error {
-                        match error {
-                            Error::DeserializeError => html! { "DeserializeError" },
-                            Error::RequestError => html! { "RequestError" },
-                        }
-                    } else {
-                        html! {}
-                    }
-                }
-            </p>
         </div>
     }
 }

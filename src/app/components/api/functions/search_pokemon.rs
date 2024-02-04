@@ -146,7 +146,7 @@ pub fn search_pokemon() -> Html {
     .expect("Failed to mount style");
 
     let search_input_style = style!(
-        r#" 
+        r#"
             width:500px;
             height:40px;
             box-shadow: 0px 0px 20px #ff0 ;
@@ -196,9 +196,65 @@ pub fn search_pokemon() -> Html {
     .expect("Failed to mount style");
     let info_style = style!(
         r#"
-            color: white;
-            margin: 30px 0;
+            color: #fff;
+            margin-top: 5px;
+            margin-bottom: 30px;
         "#
+    )
+    .expect("Failed to mount style");
+    let quote_style = style!(
+        r#"
+            color: #fff;
+            margin-top: 30px;
+        "#
+    )
+    .expect("Failed to mount style");
+    let ul_color_pokemon_style = style!(
+        r#"
+            color: #fff;
+    "#
+    )
+    .expect("Failed to mount style");
+    let list_pokemon_style = style!(
+        r#"
+            list-style: none;
+    "#
+    )
+    .expect("Failed to mount style");
+    let search_type_p_style = style!(
+        r#"
+            width: 150px;
+            text-align: center;
+            font-size: 18px;
+    "#
+    )
+    .expect("Failed to mount style");
+    let search_type_div_style = style!(
+        r#"
+            display: flex;
+            gap: 10px;
+            padding: 5px 0px;
+    "#
+    )
+    .expect("Failed to mount style");
+    let search_pokedex_no_p_style = style!(
+        r#"
+        font-size: 18px;
+    "#
+    )
+    .expect("Failed to mount style");
+    let search_pokemon_name_style = style!(
+        r#"
+        font-size: 30px;
+        padding-top: 10px;
+    "#
+    )
+    .expect("Failed to mount style");
+    let search_type_label_p_style = style!(
+        r#"
+        width: 113px;
+        font-size: 18px;
+    "#
     )
     .expect("Failed to mount style");
 
@@ -213,10 +269,21 @@ pub fn search_pokemon() -> Html {
                     <button class={search_button_style} style="cursor:pointer" type="submit" onclick={onclick} disabled={state.loading}>{"search"}</button>
                 </div>
             </form>
-            <p class={ info_style }>{ "※以下の情報は、上記のURLから取得できる情報の一部であることを理解の上、ご利用ください。" }</p>
+            <p class={ quote_style }>{ "タイプ、テラタイプの色の引用元: https://www.pokemon.co.jp/ex/sun_moon/fight/161215_01.html" }</p>
+            <p class={ info_style.clone() }>{ "※以下の情報は、上記のURLから取得できる情報の一部であることを理解の上、ご利用ください。" }</p>
             {
                 if state.loading {
                     html! { <p>{ "Loading, wait a sec..." }</p> }
+                } else {
+                    html! {}
+                }
+            }
+            {
+                if let Some(error) = &state.error {
+                    match error {
+                        Error::DeserializeError => html! { <p class={ info_style }>{ "登録されているポケモンの名前を正確に入力してください。" }</p> },
+                        Error::RequestError => html! {<p>{ "RequestError" }</p> },
+                    }
                 } else {
                     html! {}
                 }
@@ -226,21 +293,124 @@ pub fn search_pokemon() -> Html {
                 if let Some(pokemon) = &state.data {
                     html! {
                         <>
-                            <ul>
+                            <ul class={ul_color_pokemon_style}>
                                 {(pokemon.data).iter().map(|pk_data| html! {
-                                    <li>
-                                        <p>{ "pokedex_no: " }<b>{ pk_data.pokedex_no.clone() }</b><b>{ pk_data.form_no.clone() }</b></p>
-                                        <p>{ "name: " }<b>{ pk_data.name.clone() }</b></p>
-                                        <p>{ "form_name: " }<b>{ pk_data.form_name.clone() }</b></p>
-                                        <p>{ "type_1: " }<b>{ pk_data.type_1.clone() }</b></p>
-                                        <p>{ "type_2: " }<b>{ pk_data.type_2.clone() }</b></p>
-                                        <p>{ "base_stat_h: " }<b>{ pk_data.base_stat_h.clone() }</b></p>
-                                        <p>{ "base_stat_a: " }<b>{ pk_data.base_stat_a.clone() }</b></p>
-                                        <p>{ "base_stat_b: " }<b>{ pk_data.base_stat_b.clone() }</b></p>
-                                        <p>{ "base_stat_c: " }<b>{ pk_data.base_stat_c.clone() }</b></p>
-                                        <p>{ "base_stat_d: " }<b>{ pk_data.base_stat_d.clone() }</b></p>
-                                        <p>{ "base_stat_s: " }<b>{ pk_data.base_stat_s.clone() }</b></p>
-                                        <p>{ "base_stat_all: " }<b>{ pk_data.base_stat_all.clone() }</b></p>
+                                    <li class={list_pokemon_style.clone()}>
+                                        <p class={ search_pokedex_no_p_style.clone() }>{ format!("No.{}", pk_data.pokedex_no.clone()) }</p>
+                                        <h3 class={ search_pokemon_name_style.clone() }>{ format!("{}　{}", pk_data.name.clone(), pk_data.form_name.clone()) }</h3>
+                                        <div class={ search_type_div_style.clone() }>
+                                            <p class={ search_type_label_p_style.clone() }>{ "タイプ:" }</p>
+                                            <p class={ search_type_p_style.clone() } style={
+                                                match pk_data.type_1.as_str() {
+                                                        "ノーマル" => "background-color: rgb(174, 174, 174);".to_string(),
+                                                        "ほのお" => "background-color: rgb(255, 167, 102);".to_string(),
+                                                        "みず" => "background-color: rgb(100, 197, 247);".to_string(),
+                                                        "でんき" => "background-color: rgb(231, 212, 0);".to_string(),
+                                                        "くさ" => "background-color: rgb(154, 195, 14);".to_string(),
+                                                        "こおり" => "background-color: rgb(96, 233, 245);".to_string(),
+                                                        "かくとう" => "background-color: rgb(238, 105, 105);".to_string(),
+                                                        "どく" => "background-color: rgb(171, 122, 202);".to_string(),
+                                                        "じめん" => "background-color: rgb(200, 168, 65);".to_string(),
+                                                        "ひこう" => "background-color: rgb(100, 167, 241);".to_string(),
+                                                        "エスパー" => "background-color: rgb(235, 127, 244);".to_string(),
+                                                        "むし" => "background-color: rgb(81, 203, 90);".to_string(),
+                                                        "いわ" => "background-color: rgb(250, 199, 39);".to_string(),
+                                                        "ゴースト" => "background-color: rgb(117, 110, 180);".to_string(),
+                                                        "ドラゴン" => "background-color: rgb(255, 136, 89);".to_string(),
+                                                        "あく" => "background-color: rgb(104, 129, 212);".to_string(),
+                                                        "はがね" => "background-color: rgb(129, 138, 164);".to_string(),
+                                                        "フェアリー" => "background-color: rgb(252, 119, 153);".to_string(),
+                                                        _ => "background-color: rgb(0, 0, 0); color: ragb(0, 0, 0);".to_string(),
+                                                }
+                                            }>{ pk_data.type_1.clone() }</p>
+                                            <p class={ search_type_p_style.clone() } style={
+                                                match pk_data.type_2.as_str() {
+                                                        "ノーマル" => "background-color: rgb(174, 174, 174);".to_string(),
+                                                        "ほのお" => "background-color: rgb(255, 167, 102);".to_string(),
+                                                        "みず" => "background-color: rgb(100, 197, 247);".to_string(),
+                                                        "でんき" => "background-color: rgb(231, 212, 0);".to_string(),
+                                                        "くさ" => "background-color: rgb(154, 195, 14);".to_string(),
+                                                        "こおり" => "background-color: rgb(96, 233, 245);".to_string(),
+                                                        "かくとう" => "background-color: rgb(238, 105, 105);".to_string(),
+                                                        "どく" => "background-color: rgb(171, 122, 202);".to_string(),
+                                                        "じめん" => "background-color: rgb(200, 168, 65);".to_string(),
+                                                        "ひこう" => "background-color: rgb(100, 167, 241);".to_string(),
+                                                        "エスパー" => "background-color: rgb(235, 127, 244);".to_string(),
+                                                        "むし" => "background-color: rgb(81, 203, 90);".to_string(),
+                                                        "いわ" => "background-color: rgb(250, 199, 39);".to_string(),
+                                                        "ゴースト" => "background-color: rgb(117, 110, 180);".to_string(),
+                                                        "ドラゴン" => "background-color: rgb(255, 136, 89);".to_string(),
+                                                        "あく" => "background-color: rgb(104, 129, 212);".to_string(),
+                                                        "はがね" => "background-color: rgb(129, 138, 164);".to_string(),
+                                                        "フェアリー" => "background-color: rgb(252, 119, 153);".to_string(),
+                                                        _ => "background-color: rgb(0, 0, 0); color: rgb(0, 0, 0);".to_string(),
+                                                }
+                                            }>{ pk_data.type_2.clone() }</p>
+                                        </div>
+                                        <div class={ search_type_div_style.clone() }>
+                                            <p class={ search_type_label_p_style.clone() }>{ "テラスタイプ:" }</p>
+                                            <p class={ search_type_p_style.clone() } style={
+                                                match pk_data.tera_type.as_str() {
+                                                        "ノーマル" => "background-color: rgb(174, 174, 174);".to_string(),
+                                                        "ほのお" => "background-color: rgb(255, 167, 102);".to_string(),
+                                                        "みず" => "background-color: rgb(100, 197, 247);".to_string(),
+                                                        "でんき" => "background-color: rgb(231, 212, 0);".to_string(),
+                                                        "くさ" => "background-color: rgb(154, 195, 14);".to_string(),
+                                                        "こおり" => "background-color: rgb(96, 233, 245);".to_string(),
+                                                        "かくとう" => "background-color: rgb(238, 105, 105);".to_string(),
+                                                        "どく" => "background-color: rgb(171, 122, 202);".to_string(),
+                                                        "じめん" => "background-color: rgb(200, 168, 65);".to_string(),
+                                                        "ひこう" => "background-color: rgb(100, 167, 241);".to_string(),
+                                                        "エスパー" => "background-color: rgb(235, 127, 244);".to_string(),
+                                                        "むし" => "background-color: rgb(81, 203, 90);".to_string(),
+                                                        "いわ" => "background-color: rgb(250, 199, 39);".to_string(),
+                                                        "ゴースト" => "background-color: rgb(117, 110, 180);".to_string(),
+                                                        "ドラゴン" => "background-color: rgb(255, 136, 89);".to_string(),
+                                                        "あく" => "background-color: rgb(104, 129, 212);".to_string(),
+                                                        "はがね" => "background-color: rgb(129, 138, 164);".to_string(),
+                                                        "フェアリー" => "background-color: rgb(252, 119, 153);".to_string(),
+                                                        _ => "background-color: rgb(0, 0, 0);".to_string(),
+                                                }
+                                            }>{ pk_data.tera_type.clone() }</p>
+                                        </div>
+
+                                        <p>{ "hp: " }{
+                                            format!("{:.0}",
+                                            (( (pk_data.base_stat_h.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_h.clone()).parse::<f64>().unwrap() + ( (pk_data.effort_values_h.clone()).parse::<f64>().unwrap() / 4.0 ).floor() ) / 2.0).floor() + 60.0
+                                        )}</p>
+
+                                        <p>{ "a: " }<b>{
+                                            format!("{:.0}",
+                                            ( (((pk_data.base_stat_a.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_a.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_a.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_a.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        )}</b></p>
+
+                                        <p>{ "b: " }<b>{
+                                            format!("{:.0}",
+                                            ( (((pk_data.base_stat_b.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_b.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_b.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_b.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        )}</b></p>
+
+                                        // <p>{ "c: " }<b>{
+                                        //     format!("{:.0}",
+                                        //     ( ((pk_data.base_stat_c.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_c.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_c.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0 * (1.0 - ((pk_data.nature_c.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        // )}</b></p>
+
+                                        // <p>{ "d: " }<b>{
+                                        //     format!("{:.0}",
+                                        //     ( ((pk_data.base_stat_d.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_d.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_d.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0 * (1.0 - ((pk_data.nature_d.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        // )}</b></p>
+
+                                        // <p>{ "s: " }<b>{
+                                        //     format!("{:.0}",
+                                        //     ( ((pk_data.base_stat_s.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_s.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_s.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0 * (1.0 - ((pk_data.nature_s.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        // )}</b></p>
+
+                                        // <p>{ "base_stat_h: " }<b>{ pk_data.base_stat_h.clone() }</b></p>
+                                        // <p>{ "base_stat_a: " }<b>{ pk_data.base_stat_a.clone() }</b></p>
+                                        // <p>{ "base_stat_b: " }<b>{ pk_data.base_stat_b.clone() }</b></p>
+                                        // <p>{ "base_stat_c: " }<b>{ pk_data.base_stat_c.clone() }</b></p>
+                                        // <p>{ "base_stat_d: " }<b>{ pk_data.base_stat_d.clone() }</b></p>
+                                        // <p>{ "base_stat_s: " }<b>{ pk_data.base_stat_s.clone() }</b></p>
+                                        // <p>{ "base_stat_all: " }<b>{ pk_data.base_stat_all.clone() }</b></p>
                                         <p>{ "individual_values_h: " }<b>{ pk_data.individual_values_h.clone() }</b></p>
                                         <p>{ "individual_values_a: " }<b>{ pk_data.individual_values_a.clone() }</b></p>
                                         <p>{ "individual_values_b: " }<b>{ pk_data.individual_values_b.clone() }</b></p>
@@ -253,14 +423,143 @@ pub fn search_pokemon() -> Html {
                                         <p>{ "effort_values_c: " }<b>{ pk_data.effort_values_c.clone() }</b></p>
                                         <p>{ "effort_values_d: " }<b>{ pk_data.effort_values_d.clone() }</b></p>
                                         <p>{ "effort_values_s: " }<b>{ pk_data.effort_values_s.clone() }</b></p>
-                                        <p>{ "nature_a: " }<b>{ pk_data.nature_a.clone() }</b></p>
-                                        <p>{ "nature_b: " }<b>{ pk_data.nature_b.clone() }</b></p>
-                                        <p>{ "nature_c: " }<b>{ pk_data.nature_c.clone() }</b></p>
-                                        <p>{ "nature_d: " }<b>{ pk_data.nature_d.clone() }</b></p>
-                                        <p>{ "nature_s: " }<b>{ pk_data.nature_s.clone() }</b></p>
+                                        <p>
+                                            { "性格: " }{
+                                                if pk_data.nature_a.as_str() == "1" {
+                                                    if pk_data.nature_b.as_str() == "-1" {
+                                                        "さみしがり".to_string()
+                                                    } else if pk_data.nature_c.as_str() == "-1" {
+                                                        "いじっぱり".to_string()
+                                                    } else if pk_data.nature_d.as_str() == "-1" {
+                                                        "やんちゃ".to_string()
+                                                    } else if pk_data.nature_s.as_str() == "-1" {
+                                                        "ゆうかん".to_string()
+                                                    } else {
+                                                        "Unexpected Error".to_string()
+                                                    }
+                                                } else if pk_data.nature_a.as_str() == "-1" {
+                                                    if pk_data.nature_b.as_str() == "1" {
+                                                        "ずぶとい".to_string()
+                                                    } else if pk_data.nature_c.as_str() == "1" {
+                                                        "ひかえめ".to_string()
+                                                    } else if pk_data.nature_d.as_str() == "1" {
+                                                        "おだやか".to_string()
+                                                    } else if pk_data.nature_s.as_str() == "1" {
+                                                        "おくびょう".to_string()
+                                                    } else {
+                                                        "Unexpected Error".to_string()
+                                                    }
+                                                } else if pk_data.nature_a.as_str() == "0" {
+                                                    if pk_data.nature_b.as_str() == "1" {
+                                                        if pk_data.nature_c.as_str() == "-1" {
+                                                            "わんぱく".to_string()
+                                                        } else if pk_data.nature_d.as_str() == "-1" {
+                                                            "のうてんき".to_string()
+                                                        } else if pk_data.nature_s.as_str() == "-1" {
+                                                            "のんき".to_string()
+                                                        } else {
+                                                            "Unexpected Error".to_string()
+                                                        }
+                                                    } else if pk_data.nature_b.as_str() == "-1" {
+                                                        if pk_data.nature_c.as_str() == "1" {
+                                                            "おっとり".to_string()
+                                                        } else if pk_data.nature_d.as_str() == "1" {
+                                                            "おとなしい".to_string()
+                                                        } else if pk_data.nature_s.as_str() == "1" {
+                                                            "せっかち".to_string()
+                                                        } else {
+                                                            "Unexpected Error".to_string()
+                                                        }
+                                                    } else if pk_data.nature_b.as_str() == "0" {
+                                                        if pk_data.nature_c.as_str() == "1" {
+                                                            if pk_data.nature_d.as_str() == "-1" {
+                                                                "うっかりや".to_string()
+                                                            } else if pk_data.nature_s.as_str() == "-1" {
+                                                                "れいせい".to_string()
+                                                            } else {
+                                                                "Unexpected Error".to_string()
+                                                            }
+                                                        } else if pk_data.nature_c.as_str() == "-1" {
+                                                            if pk_data.nature_d.as_str() == "1" {
+                                                                "しんちょう".to_string()
+                                                            } else if pk_data.nature_s.as_str() == "1" {
+                                                                "ようき".to_string()
+                                                            } else {
+                                                                "Unexpected Error".to_string()
+                                                            }
+                                                        } else if pk_data.nature_c.as_str() == "0" {
+                                                            if pk_data.nature_d.as_str() == "1" {
+                                                                "なまいき".to_string()
+                                                            } else if pk_data.nature_s.as_str() == "1" {
+                                                                "むじゃき".to_string()
+                                                            } else if pk_data.nature_d.as_str() == "0" && pk_data.nature_s.as_str() == "0" {
+                                                                "てれや or がんばりや or すなお or きまぐれ or まじめ".to_string()
+                                                            } else {
+                                                                "Unexpected Error".to_string()
+                                                            }
+                                                        } else {
+                                                        "Unexpected Error".to_string()
+                                                        }
+                                                    } else {
+                                                        "Unexpected Error".to_string()
+                                                    }
+                                                } else {
+                                                    "Unexpected Error".to_string()
+                                                }
+                                            }
+                                        {
+                                            format!("　({}{}{}{}{})",
+                                                {
+                                                    match pk_data.nature_a.as_str() {
+                                                        "1" => "A: ↑".to_string(),
+                                                        "0" => "".to_string(),
+                                                        "-1" => "A: ↓".to_string(),
+                                                        _ => "".to_string(),
+                                                    }
+                                                },
+                                                {
+                                                    match pk_data.nature_b.as_str() {
+                                                        "1" => "B: ↑".to_string(),
+                                                        "0" => "".to_string(),
+                                                        "-1" => "B: ↓".to_string(),
+                                                        _ => "".to_string(),
+                                                    }
+                                                },
+                                                {
+                                                    match pk_data.nature_c.as_str() {
+                                                        "1" => "C: ↑".to_string(),
+                                                        "0" => "".to_string(),
+                                                        "-1" => "C: ↓".to_string(),
+                                                        _ => "".to_string(),
+                                                    }
+                                                },
+                                                {
+                                                    match pk_data.nature_d.as_str() {
+                                                        "1" => "D: ↑".to_string(),
+                                                        "0" => "".to_string(),
+                                                        "-1" => "D: ↓".to_string(),
+                                                        _ => "".to_string(),
+                                                    }
+                                                },
+                                                {
+                                                    match pk_data.nature_s.as_str() {
+                                                        "1" => "S: ↑".to_string(),
+                                                        "0" => "".to_string(),
+                                                        "-1" => "S: ↓".to_string(),
+                                                        _ => "".to_string(),
+                                                    }
+                                                }
+                                            )
+                                        }
+                                        </p>
+                                        // <p>{ "nature_a: " }<b>{ pk_data.nature_a.clone() }</b></p>
+                                        // <p>{ "nature_b: " }<b>{ pk_data.nature_b.clone() }</b></p>
+                                        // <p>{ "nature_c: " }<b>{ pk_data.nature_c.clone() }</b></p>
+                                        // <p>{ "nature_d: " }<b>{ pk_data.nature_d.clone() }</b></p>
+                                        // <p>{ "nature_s: " }<b>{ pk_data.nature_s.clone() }</b></p>
+
                                         <p>{ "item: " }<b>{ pk_data.item.clone() }</b></p>
                                         <p>{ "ability: " }<b>{ pk_data.ability.clone() }</b></p>
-                                        <p>{ "tera_type: " }<b>{ pk_data.tera_type.clone() }</b></p>
                                         <br />
                                         <br />
                                         <p>{ "move_1 name: " }<b>{ pk_data.move_1.name.clone() }</b></p>
@@ -283,18 +582,6 @@ pub fn search_pokemon() -> Html {
                     html! {}
                 }
             }
-            <p>
-                {
-                    if let Some(error) = &state.error {
-                        match error {
-                            Error::DeserializeError => html! { <p>{ "登録されているポケモンの名前を正確に入力してください。" }</p> },
-                            Error::RequestError => html! { "RequestError" },
-                        }
-                    } else {
-                        html! {}
-                    }
-                }
-            </p>
         </>
     }
 }

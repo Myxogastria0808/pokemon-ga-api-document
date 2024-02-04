@@ -328,6 +328,18 @@ pub fn archive() -> Html {
             <div class={search_space_style}></div>
             <div class={string_color_style}>
                 {
+                    if let Some(max_generation) = &pre_state.data {
+                        if let Some(error) = &state.error {
+                            match error {
+                                Error::DeserializeError => html! { <p>{ format!("世代数は、1 から {} の間で入力してください。", max_generation.generation) }</p> },
+                                Error::RequestError => html! { <p>{ "RequestError" }</p> },
+                            }
+                        } else {
+                            html! {}
+                        }
+                    } else { html! { <p>{ "RequestError" }</p> } }
+                }
+                {
                     if let Some(pokemon) = &state.data {
                         html! {
                             <>
@@ -369,18 +381,6 @@ pub fn archive() -> Html {
                     }
                 }
             </div>
-            {
-                if let Some(max_generation) = &pre_state.data {
-                    if let Some(error) = &state.error {
-                        match error {
-                            Error::DeserializeError => html! { <p>{ format!("世代数は、1 から {} の間で入力してください。", max_generation.generation) }</p> },
-                            Error::RequestError => html! { <p>{ "RequestError" }</p> },
-                        }
-                    } else {
-                        html! {}
-                    }
-                } else { html! { <p>{ "RequestError" }</p> } }
-            }
         </>
     }
 }

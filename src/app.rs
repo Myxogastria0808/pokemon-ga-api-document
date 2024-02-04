@@ -41,7 +41,7 @@ fn switch(routes: Route) -> Html {
 pub fn app() -> Html {
     let container_style = style!(
         r#"
-            width: 100%;
+            width: 90%;
             max-width: 900px;
             margin-right: auto;
             margin-left: auto;

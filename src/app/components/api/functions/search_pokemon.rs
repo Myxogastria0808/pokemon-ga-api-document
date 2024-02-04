@@ -250,6 +250,13 @@ pub fn search_pokemon() -> Html {
     "#
     )
     .expect("Failed to mount style");
+    let search_move_p_style = style!(
+        r#"
+            display: flex;
+            padding: 5px 0px;
+    "#
+    )
+    .expect("Failed to mount style");
     let search_pokedex_no_p_style = style!(
         r#"
         font-size: 18px;
@@ -261,6 +268,13 @@ pub fn search_pokemon() -> Html {
         font-size: 30px;
         padding-top: 10px;
     "#
+    )
+    .expect("Failed to mount style");
+    let search_pk_value_p_style = style!(
+        r#"
+            font-size: 18px;
+            width: 100px;
+        "#
     )
     .expect("Failed to mount style");
 
@@ -519,36 +533,162 @@ pub fn search_pokemon() -> Html {
                                             }
                                             </p>
                                         </div>
+                                        <div class={ search_pk_div_style.clone() }>
+                                            <p class={ search_pk_label_p_style.clone() }>{ "技:" }</p>
+                                            <p class={ search_move_p_style.clone() }>{ format!("{}、", pk_data.move_1.name.clone()) }</p>
+                                            <p class={ search_move_p_style.clone() }>{ format!("{}、", pk_data.move_2.name.clone()) }</p>
+                                            <p class={ search_move_p_style.clone() }>{ format!("{}、", pk_data.move_3.name.clone()) }</p>
+                                            <p class={ search_move_p_style.clone() }>{ format!("{}", pk_data.move_4.name.clone()) }</p>
+                                        </div>
 
-                                        <p>{ "hp: " }{
-                                            format!("{:.0}",
-                                            (( (pk_data.base_stat_h.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_h.clone()).parse::<f64>().unwrap() + ( (pk_data.effort_values_h.clone()).parse::<f64>().unwrap() / 4.0 ).floor() ) / 2.0).floor() + 60.0
-                                        )}</p>
+                                        <div class={ search_pk_div_style.clone() }>
+                                            <p class={ search_pk_label_p_style.clone() }>{ "実数値:" }</p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("HP: {:.0}",
+                                                    (( (pk_data.base_stat_h.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_h.clone()).parse::<f64>().unwrap() + ( (pk_data.effort_values_h.clone()).parse::<f64>().unwrap() / 4.0 ).floor() ) / 2.0).floor() + 60.0
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("A: {:.0}",
+                                                    ( ((((pk_data.base_stat_a.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_a.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_a.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_a.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("B: {:.0}",
+                                                    ( ((((pk_data.base_stat_b.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_b.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_b.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_b.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("C: {:.0}",
+                                                    ( ((((pk_data.base_stat_c.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_c.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_c.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_c.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("D: {:.0}",
+                                                    ( ((((pk_data.base_stat_d.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_d.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_d.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_d.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("S: {:.0}",
+                                                    ( ((((pk_data.base_stat_s.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_s.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_s.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_s.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                                )}
+                                            </p>
+                                        </div>
 
-                                        <p>{ "a: " }<b>{
-                                            format!("{:.0}",
-                                            ( (((pk_data.base_stat_a.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_a.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_a.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_a.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        )}</b></p>
+                                        <div class={ search_pk_div_style.clone() }>
+                                            <p class={ search_pk_label_p_style.clone() }>{ "個体値:" }</p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("HP: {}",
+                                                    pk_data.individual_values_h.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("A: {}",
+                                                    pk_data.individual_values_a.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("B: {}",
+                                                    pk_data.individual_values_b.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("C: {}",
+                                                    pk_data.individual_values_c.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("D: {}",
+                                                    pk_data.individual_values_d.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("S: {}",
+                                                    pk_data.individual_values_s.clone()
+                                                )}
+                                            </p>
+                                        </div>
 
-                                        <p>{ "b: " }<b>{
-                                            format!("{:.0}",
-                                            ( (((pk_data.base_stat_b.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_b.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_b.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_b.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        )}</b></p>
-
-                                        // <p>{ "c: " }<b>{
+                                        <div class={ search_pk_div_style.clone() }>
+                                            <p class={ search_pk_label_p_style.clone() }>{ "努力値:" }</p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("HP: {}",
+                                                    pk_data.effort_values_h.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("A: {}",
+                                                    pk_data.effort_values_a.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("B: {}",
+                                                    pk_data.effort_values_b.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("C: {}",
+                                                    pk_data.effort_values_c.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("D: {}",
+                                                    pk_data.effort_values_d.clone()
+                                                )}
+                                            </p>
+                                            <p class={ search_pk_value_p_style.clone() }>
+                                                {
+                                                    format!("S: {}",
+                                                    pk_data.effort_values_s.clone()
+                                                )}
+                                            </p>
+                                        </div>
+                                        // <div class={ search_pk_div_style.clone() }>{ "a: " }<b>{
                                         //     format!("{:.0}",
-                                        //     ( ((pk_data.base_stat_c.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_c.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_c.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0 * (1.0 - ((pk_data.nature_c.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        // )}</b></p>
+                                        //     ( ((((pk_data.base_stat_a.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_a.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_a.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_a.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        // )}</b>
+                                        // </div>
 
-                                        // <p>{ "d: " }<b>{
+                                        // <div class={ search_pk_div_style.clone() }>{ "b: " }<b>{
                                         //     format!("{:.0}",
-                                        //     ( ((pk_data.base_stat_d.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_d.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_d.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0 * (1.0 - ((pk_data.nature_d.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        // )}</b></p>
+                                        //     ( ((((pk_data.base_stat_b.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_b.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_b.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_b.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        // )}</b>
+                                        // </div>
 
-                                        // <p>{ "s: " }<b>{
+                                        // <div class={ search_pk_div_style.clone() }>{ "c: " }<b>{
                                         //     format!("{:.0}",
-                                        //     ( ((pk_data.base_stat_s.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_s.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_s.clone()).parse::<f64>().unwrap() / 4.0).floor() / 2.0).floor() + 5.0 * (1.0 - ((pk_data.nature_s.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        // )}</b></p>
+                                        //     ( ((((pk_data.base_stat_c.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_c.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_c.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_c.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        // )}</b>
+                                        // </div>
+
+                                        // <div class={ search_pk_div_style.clone() }>{ "d: " }<b>{
+                                        //     format!("{:.0}",
+                                        //     ( ((((pk_data.base_stat_d.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_d.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_d.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_d.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        // )}</b>
+                                        // </div>
+
+                                        // <div class={ search_pk_div_style.clone() }>{ "s: " }<b>{
+                                        //     format!("{:.0}",
+                                        //     ( ((((pk_data.base_stat_s.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_s.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_s.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_s.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
+                                        // )}</b>
+                                        // </div>
 
                                         // <p>{ "base_stat_h: " }<b>{ pk_data.base_stat_h.clone() }</b></p>
                                         // <p>{ "base_stat_a: " }<b>{ pk_data.base_stat_a.clone() }</b></p>
@@ -557,33 +697,24 @@ pub fn search_pokemon() -> Html {
                                         // <p>{ "base_stat_d: " }<b>{ pk_data.base_stat_d.clone() }</b></p>
                                         // <p>{ "base_stat_s: " }<b>{ pk_data.base_stat_s.clone() }</b></p>
                                         // <p>{ "base_stat_all: " }<b>{ pk_data.base_stat_all.clone() }</b></p>
-                                        <p>{ "individual_values_h: " }<b>{ pk_data.individual_values_h.clone() }</b></p>
-                                        <p>{ "individual_values_a: " }<b>{ pk_data.individual_values_a.clone() }</b></p>
-                                        <p>{ "individual_values_b: " }<b>{ pk_data.individual_values_b.clone() }</b></p>
-                                        <p>{ "individual_values_c: " }<b>{ pk_data.individual_values_c.clone() }</b></p>
-                                        <p>{ "individual_values_d: " }<b>{ pk_data.individual_values_d.clone() }</b></p>
-                                        <p>{ "individual_values_s: " }<b>{ pk_data.individual_values_s.clone() }</b></p>
-                                        <p>{ "effort_values_h: " }<b>{ pk_data.effort_values_h.clone() }</b></p>
-                                        <p>{ "effort_values_a: " }<b>{ pk_data.effort_values_a.clone() }</b></p>
-                                        <p>{ "effort_values_b: " }<b>{ pk_data.effort_values_b.clone() }</b></p>
-                                        <p>{ "effort_values_c: " }<b>{ pk_data.effort_values_c.clone() }</b></p>
-                                        <p>{ "effort_values_d: " }<b>{ pk_data.effort_values_d.clone() }</b></p>
-                                        <p>{ "effort_values_s: " }<b>{ pk_data.effort_values_s.clone() }</b></p>
+                                        // <p>{ "individual_values_h: " }<b>{ pk_data.individual_values_h.clone() }</b></p>
+                                        // <p>{ "individual_values_a: " }<b>{ pk_data.individual_values_a.clone() }</b></p>
+                                        // <p>{ "individual_values_b: " }<b>{ pk_data.individual_values_b.clone() }</b></p>
+                                        // <p>{ "individual_values_c: " }<b>{ pk_data.individual_values_c.clone() }</b></p>
+                                        // <p>{ "individual_values_d: " }<b>{ pk_data.individual_values_d.clone() }</b></p>
+                                        // <p>{ "individual_values_s: " }<b>{ pk_data.individual_values_s.clone() }</b></p>
+                                        // <p>{ "effort_values_h: " }<b>{ pk_data.effort_values_h.clone() }</b></p>
+                                        // <p>{ "effort_values_a: " }<b>{ pk_data.effort_values_a.clone() }</b></p>
+                                        // <p>{ "effort_values_b: " }<b>{ pk_data.effort_values_b.clone() }</b></p>
+                                        // <p>{ "effort_values_c: " }<b>{ pk_data.effort_values_c.clone() }</b></p>
+                                        // <p>{ "effort_values_d: " }<b>{ pk_data.effort_values_d.clone() }</b></p>
+                                        // <p>{ "effort_values_s: " }<b>{ pk_data.effort_values_s.clone() }</b></p>
                                         // <p>{ "nature_a: " }<b>{ pk_data.nature_a.clone() }</b></p>
                                         // <p>{ "nature_b: " }<b>{ pk_data.nature_b.clone() }</b></p>
                                         // <p>{ "nature_c: " }<b>{ pk_data.nature_c.clone() }</b></p>
                                         // <p>{ "nature_d: " }<b>{ pk_data.nature_d.clone() }</b></p>
                                         // <p>{ "nature_s: " }<b>{ pk_data.nature_s.clone() }</b></p>
 
-                                        <br />
-                                        <br />
-                                        <p>{ "move_1 name: " }<b>{ pk_data.move_1.name.clone() }</b></p>
-                                        <br />
-                                        <p>{ "move_2 name: " }<b>{ pk_data.move_2.name.clone() }</b></p>
-                                        <br />
-                                        <p>{ "move_3 name: " }<b>{ pk_data.move_3.name.clone() }</b></p>
-                                        <br />
-                                        <p>{ "move_4 name: " }<b>{ pk_data.move_4.name.clone() }</b></p>
                                         <br />
                                         <br />
                                         <br />

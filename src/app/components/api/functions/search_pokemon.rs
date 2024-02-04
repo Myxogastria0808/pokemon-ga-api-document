@@ -221,6 +221,13 @@ pub fn search_pokemon() -> Html {
     "#
     )
     .expect("Failed to mount style");
+    let search_pk_label_p_style = style!(
+        r#"
+        width: 113px;
+        font-size: 18px;
+    "#
+    )
+    .expect("Failed to mount style");
     let search_type_p_style = style!(
         r#"
             width: 150px;
@@ -229,7 +236,13 @@ pub fn search_pokemon() -> Html {
     "#
     )
     .expect("Failed to mount style");
-    let search_type_div_style = style!(
+    let search_pk_p_style = style!(
+        r#"
+            font-size: 18px;
+    "#
+    )
+    .expect("Failed to mount style");
+    let search_pk_div_style = style!(
         r#"
             display: flex;
             gap: 10px;
@@ -247,13 +260,6 @@ pub fn search_pokemon() -> Html {
         r#"
         font-size: 30px;
         padding-top: 10px;
-    "#
-    )
-    .expect("Failed to mount style");
-    let search_type_label_p_style = style!(
-        r#"
-        width: 113px;
-        font-size: 18px;
     "#
     )
     .expect("Failed to mount style");
@@ -298,8 +304,8 @@ pub fn search_pokemon() -> Html {
                                     <li class={list_pokemon_style.clone()}>
                                         <p class={ search_pokedex_no_p_style.clone() }>{ format!("No.{}", pk_data.pokedex_no.clone()) }</p>
                                         <h3 class={ search_pokemon_name_style.clone() }>{ format!("{}　{}", pk_data.name.clone(), pk_data.form_name.clone()) }</h3>
-                                        <div class={ search_type_div_style.clone() }>
-                                            <p class={ search_type_label_p_style.clone() }>{ "タイプ:" }</p>
+                                        <div class={ search_pk_div_style.clone() }>
+                                            <p class={ search_pk_label_p_style.clone() }>{ "タイプ:" }</p>
                                             <p class={ search_type_p_style.clone() } style={
                                                 match pk_data.type_1.as_str() {
                                                         "ノーマル" => "background-color: rgb(174, 174, 174);".to_string(),
@@ -347,8 +353,8 @@ pub fn search_pokemon() -> Html {
                                                 }
                                             }>{ pk_data.type_2.clone() }</p>
                                         </div>
-                                        <div class={ search_type_div_style.clone() }>
-                                            <p class={ search_type_label_p_style.clone() }>{ "テラスタイプ:" }</p>
+                                        <div class={ search_pk_div_style.clone() }>
+                                            <p class={ search_pk_label_p_style.clone() }>{ "テラスタイプ:" }</p>
                                             <p class={ search_type_p_style.clone() } style={
                                                 match pk_data.tera_type.as_str() {
                                                         "ノーマル" => "background-color: rgb(174, 174, 174);".to_string(),
@@ -372,6 +378,146 @@ pub fn search_pokemon() -> Html {
                                                         _ => "background-color: rgb(0, 0, 0);".to_string(),
                                                 }
                                             }>{ pk_data.tera_type.clone() }</p>
+                                        </div>
+                                        <div class={ search_pk_div_style.clone() }>
+                                            <p class={ search_pk_label_p_style.clone() }>{ "持ち物:" }</p>
+                                            <p class={ search_pk_p_style.clone() }>{ pk_data.item.clone() }</p>
+                                        </div>
+                                        <div class={ search_pk_div_style.clone() }>
+                                            <p class={ search_pk_label_p_style.clone() }>{ "特性:" }</p>
+                                            <p class={ search_pk_p_style.clone() }>{ pk_data.ability.clone() }</p>
+                                        </div>
+                                        <div class={ search_pk_div_style.clone() }>
+                                            <p class={ search_pk_label_p_style.clone() }>{ "性格:" }</p>
+                                            <p class={ search_pk_p_style.clone() }>
+                                                {
+                                                    if pk_data.nature_a.as_str() == "1" {
+                                                        if pk_data.nature_b.as_str() == "-1" {
+                                                            "さみしがり".to_string()
+                                                        } else if pk_data.nature_c.as_str() == "-1" {
+                                                            "いじっぱり".to_string()
+                                                        } else if pk_data.nature_d.as_str() == "-1" {
+                                                            "やんちゃ".to_string()
+                                                        } else if pk_data.nature_s.as_str() == "-1" {
+                                                            "ゆうかん".to_string()
+                                                        } else {
+                                                            "Unexpected Error".to_string()
+                                                        }
+                                                    } else if pk_data.nature_a.as_str() == "-1" {
+                                                        if pk_data.nature_b.as_str() == "1" {
+                                                            "ずぶとい".to_string()
+                                                        } else if pk_data.nature_c.as_str() == "1" {
+                                                            "ひかえめ".to_string()
+                                                        } else if pk_data.nature_d.as_str() == "1" {
+                                                            "おだやか".to_string()
+                                                        } else if pk_data.nature_s.as_str() == "1" {
+                                                            "おくびょう".to_string()
+                                                        } else {
+                                                            "Unexpected Error".to_string()
+                                                        }
+                                                    } else if pk_data.nature_a.as_str() == "0" {
+                                                        if pk_data.nature_b.as_str() == "1" {
+                                                            if pk_data.nature_c.as_str() == "-1" {
+                                                                "わんぱく".to_string()
+                                                            } else if pk_data.nature_d.as_str() == "-1" {
+                                                                "のうてんき".to_string()
+                                                            } else if pk_data.nature_s.as_str() == "-1" {
+                                                                "のんき".to_string()
+                                                            } else {
+                                                                "Unexpected Error".to_string()
+                                                            }
+                                                        } else if pk_data.nature_b.as_str() == "-1" {
+                                                            if pk_data.nature_c.as_str() == "1" {
+                                                                "おっとり".to_string()
+                                                            } else if pk_data.nature_d.as_str() == "1" {
+                                                                "おとなしい".to_string()
+                                                            } else if pk_data.nature_s.as_str() == "1" {
+                                                                "せっかち".to_string()
+                                                            } else {
+                                                                "Unexpected Error".to_string()
+                                                            }
+                                                        } else if pk_data.nature_b.as_str() == "0" {
+                                                            if pk_data.nature_c.as_str() == "1" {
+                                                                if pk_data.nature_d.as_str() == "-1" {
+                                                                    "うっかりや".to_string()
+                                                                } else if pk_data.nature_s.as_str() == "-1" {
+                                                                    "れいせい".to_string()
+                                                                } else {
+                                                                    "Unexpected Error".to_string()
+                                                                }
+                                                            } else if pk_data.nature_c.as_str() == "-1" {
+                                                                if pk_data.nature_d.as_str() == "1" {
+                                                                    "しんちょう".to_string()
+                                                                } else if pk_data.nature_s.as_str() == "1" {
+                                                                    "ようき".to_string()
+                                                                } else {
+                                                                    "Unexpected Error".to_string()
+                                                                }
+                                                            } else if pk_data.nature_c.as_str() == "0" {
+                                                                if pk_data.nature_d.as_str() == "1" {
+                                                                    "なまいき".to_string()
+                                                                } else if pk_data.nature_s.as_str() == "1" {
+                                                                    "むじゃき".to_string()
+                                                                } else if pk_data.nature_d.as_str() == "0" && pk_data.nature_s.as_str() == "0" {
+                                                                    "てれや or がんばりや or すなお or きまぐれ or まじめ".to_string()
+                                                                } else {
+                                                                    "Unexpected Error".to_string()
+                                                                }
+                                                            } else {
+                                                            "Unexpected Error".to_string()
+                                                            }
+                                                        } else {
+                                                            "Unexpected Error".to_string()
+                                                        }
+                                                    } else {
+                                                        "Unexpected Error".to_string()
+                                                    }
+                                                }
+                                            {
+                                                format!("　({}{}{}{}{})",
+                                                    {
+                                                        match pk_data.nature_a.as_str() {
+                                                            "1" => "A: ↑".to_string(),
+                                                            "0" => "".to_string(),
+                                                            "-1" => "A: ↓".to_string(),
+                                                            _ => "".to_string(),
+                                                        }
+                                                    },
+                                                    {
+                                                        match pk_data.nature_b.as_str() {
+                                                            "1" => "B: ↑".to_string(),
+                                                            "0" => "".to_string(),
+                                                            "-1" => "B: ↓".to_string(),
+                                                            _ => "".to_string(),
+                                                        }
+                                                    },
+                                                    {
+                                                        match pk_data.nature_c.as_str() {
+                                                            "1" => "C: ↑".to_string(),
+                                                            "0" => "".to_string(),
+                                                            "-1" => "C: ↓".to_string(),
+                                                            _ => "".to_string(),
+                                                        }
+                                                    },
+                                                    {
+                                                        match pk_data.nature_d.as_str() {
+                                                            "1" => "D: ↑".to_string(),
+                                                            "0" => "".to_string(),
+                                                            "-1" => "D: ↓".to_string(),
+                                                            _ => "".to_string(),
+                                                        }
+                                                    },
+                                                    {
+                                                        match pk_data.nature_s.as_str() {
+                                                            "1" => "S: ↑".to_string(),
+                                                            "0" => "".to_string(),
+                                                            "-1" => "S: ↓".to_string(),
+                                                            _ => "".to_string(),
+                                                        }
+                                                    }
+                                                )
+                                            }
+                                            </p>
                                         </div>
 
                                         <p>{ "hp: " }{
@@ -423,143 +569,12 @@ pub fn search_pokemon() -> Html {
                                         <p>{ "effort_values_c: " }<b>{ pk_data.effort_values_c.clone() }</b></p>
                                         <p>{ "effort_values_d: " }<b>{ pk_data.effort_values_d.clone() }</b></p>
                                         <p>{ "effort_values_s: " }<b>{ pk_data.effort_values_s.clone() }</b></p>
-                                        <p>
-                                            { "性格: " }{
-                                                if pk_data.nature_a.as_str() == "1" {
-                                                    if pk_data.nature_b.as_str() == "-1" {
-                                                        "さみしがり".to_string()
-                                                    } else if pk_data.nature_c.as_str() == "-1" {
-                                                        "いじっぱり".to_string()
-                                                    } else if pk_data.nature_d.as_str() == "-1" {
-                                                        "やんちゃ".to_string()
-                                                    } else if pk_data.nature_s.as_str() == "-1" {
-                                                        "ゆうかん".to_string()
-                                                    } else {
-                                                        "Unexpected Error".to_string()
-                                                    }
-                                                } else if pk_data.nature_a.as_str() == "-1" {
-                                                    if pk_data.nature_b.as_str() == "1" {
-                                                        "ずぶとい".to_string()
-                                                    } else if pk_data.nature_c.as_str() == "1" {
-                                                        "ひかえめ".to_string()
-                                                    } else if pk_data.nature_d.as_str() == "1" {
-                                                        "おだやか".to_string()
-                                                    } else if pk_data.nature_s.as_str() == "1" {
-                                                        "おくびょう".to_string()
-                                                    } else {
-                                                        "Unexpected Error".to_string()
-                                                    }
-                                                } else if pk_data.nature_a.as_str() == "0" {
-                                                    if pk_data.nature_b.as_str() == "1" {
-                                                        if pk_data.nature_c.as_str() == "-1" {
-                                                            "わんぱく".to_string()
-                                                        } else if pk_data.nature_d.as_str() == "-1" {
-                                                            "のうてんき".to_string()
-                                                        } else if pk_data.nature_s.as_str() == "-1" {
-                                                            "のんき".to_string()
-                                                        } else {
-                                                            "Unexpected Error".to_string()
-                                                        }
-                                                    } else if pk_data.nature_b.as_str() == "-1" {
-                                                        if pk_data.nature_c.as_str() == "1" {
-                                                            "おっとり".to_string()
-                                                        } else if pk_data.nature_d.as_str() == "1" {
-                                                            "おとなしい".to_string()
-                                                        } else if pk_data.nature_s.as_str() == "1" {
-                                                            "せっかち".to_string()
-                                                        } else {
-                                                            "Unexpected Error".to_string()
-                                                        }
-                                                    } else if pk_data.nature_b.as_str() == "0" {
-                                                        if pk_data.nature_c.as_str() == "1" {
-                                                            if pk_data.nature_d.as_str() == "-1" {
-                                                                "うっかりや".to_string()
-                                                            } else if pk_data.nature_s.as_str() == "-1" {
-                                                                "れいせい".to_string()
-                                                            } else {
-                                                                "Unexpected Error".to_string()
-                                                            }
-                                                        } else if pk_data.nature_c.as_str() == "-1" {
-                                                            if pk_data.nature_d.as_str() == "1" {
-                                                                "しんちょう".to_string()
-                                                            } else if pk_data.nature_s.as_str() == "1" {
-                                                                "ようき".to_string()
-                                                            } else {
-                                                                "Unexpected Error".to_string()
-                                                            }
-                                                        } else if pk_data.nature_c.as_str() == "0" {
-                                                            if pk_data.nature_d.as_str() == "1" {
-                                                                "なまいき".to_string()
-                                                            } else if pk_data.nature_s.as_str() == "1" {
-                                                                "むじゃき".to_string()
-                                                            } else if pk_data.nature_d.as_str() == "0" && pk_data.nature_s.as_str() == "0" {
-                                                                "てれや or がんばりや or すなお or きまぐれ or まじめ".to_string()
-                                                            } else {
-                                                                "Unexpected Error".to_string()
-                                                            }
-                                                        } else {
-                                                        "Unexpected Error".to_string()
-                                                        }
-                                                    } else {
-                                                        "Unexpected Error".to_string()
-                                                    }
-                                                } else {
-                                                    "Unexpected Error".to_string()
-                                                }
-                                            }
-                                        {
-                                            format!("　({}{}{}{}{})",
-                                                {
-                                                    match pk_data.nature_a.as_str() {
-                                                        "1" => "A: ↑".to_string(),
-                                                        "0" => "".to_string(),
-                                                        "-1" => "A: ↓".to_string(),
-                                                        _ => "".to_string(),
-                                                    }
-                                                },
-                                                {
-                                                    match pk_data.nature_b.as_str() {
-                                                        "1" => "B: ↑".to_string(),
-                                                        "0" => "".to_string(),
-                                                        "-1" => "B: ↓".to_string(),
-                                                        _ => "".to_string(),
-                                                    }
-                                                },
-                                                {
-                                                    match pk_data.nature_c.as_str() {
-                                                        "1" => "C: ↑".to_string(),
-                                                        "0" => "".to_string(),
-                                                        "-1" => "C: ↓".to_string(),
-                                                        _ => "".to_string(),
-                                                    }
-                                                },
-                                                {
-                                                    match pk_data.nature_d.as_str() {
-                                                        "1" => "D: ↑".to_string(),
-                                                        "0" => "".to_string(),
-                                                        "-1" => "D: ↓".to_string(),
-                                                        _ => "".to_string(),
-                                                    }
-                                                },
-                                                {
-                                                    match pk_data.nature_s.as_str() {
-                                                        "1" => "S: ↑".to_string(),
-                                                        "0" => "".to_string(),
-                                                        "-1" => "S: ↓".to_string(),
-                                                        _ => "".to_string(),
-                                                    }
-                                                }
-                                            )
-                                        }
-                                        </p>
                                         // <p>{ "nature_a: " }<b>{ pk_data.nature_a.clone() }</b></p>
                                         // <p>{ "nature_b: " }<b>{ pk_data.nature_b.clone() }</b></p>
                                         // <p>{ "nature_c: " }<b>{ pk_data.nature_c.clone() }</b></p>
                                         // <p>{ "nature_d: " }<b>{ pk_data.nature_d.clone() }</b></p>
                                         // <p>{ "nature_s: " }<b>{ pk_data.nature_s.clone() }</b></p>
 
-                                        <p>{ "item: " }<b>{ pk_data.item.clone() }</b></p>
-                                        <p>{ "ability: " }<b>{ pk_data.ability.clone() }</b></p>
                                         <br />
                                         <br />
                                         <p>{ "move_1 name: " }<b>{ pk_data.move_1.name.clone() }</b></p>

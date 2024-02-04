@@ -287,7 +287,7 @@ pub fn archive() -> Html {
                                 <form>
                                     <div class={archive_div_style}>
                                         <input class={archive_input_style} type="numeric" inputmode="numeric" onchange={onchange} min="1" max={(now_max_generation.generation).to_string()} step="1" placeholder="世代数を入力" />
-                                        <button class={archive_button_style} type="submit" style="cursor:pointer" onclick={onclick}>{"入力"}</button>
+                                        <button class={archive_button_style} type="submit" style="cursor:pointer" onclick={onclick}>{"Search"}</button>
                                     </div>
                                 </form>
                             </>

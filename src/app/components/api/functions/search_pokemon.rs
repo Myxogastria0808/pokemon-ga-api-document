@@ -287,7 +287,7 @@ pub fn search_pokemon() -> Html {
             <form class={search_form_style}>
                 <div class={search_div_style}>
                     <input class={search_input_style} type="text" onchange={onchange} id="pk_name" placeholder="ポケモンの名前を入力" />
-                    <button class={search_button_style} style="cursor:pointer" type="submit" onclick={onclick} disabled={state.loading}>{"search"}</button>
+                    <button class={search_button_style} style="cursor:pointer" type="submit" onclick={onclick} disabled={state.loading}>{"Search"}</button>
                 </div>
             </form>
             <p class={ quote_style }>{ "タイプ、テラタイプの色の引用元: https://www.pokemon.co.jp/ex/sun_moon/fight/161215_01.html" }</p>

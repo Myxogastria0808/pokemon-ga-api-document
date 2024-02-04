@@ -252,6 +252,7 @@ pub fn search_pokemon() -> Html {
     .expect("Failed to mount style");
     let search_move_p_style = style!(
         r#"
+            font-size: 18px;
             display: flex;
             padding: 5px 0px;
     "#
@@ -317,7 +318,18 @@ pub fn search_pokemon() -> Html {
                                 {(pokemon.data).iter().map(|pk_data| html! {
                                     <li class={list_pokemon_style.clone()}>
                                         <p class={ search_pokedex_no_p_style.clone() }>{ format!("No.{}", pk_data.pokedex_no.clone()) }</p>
-                                        <h3 class={ search_pokemon_name_style.clone() }>{ format!("{}　{}", pk_data.name.clone(), pk_data.form_name.clone()) }</h3>
+                                        <h3 class={ search_pokemon_name_style.clone() }>
+                                            {
+                                                format!(
+                                                    "{}　{}",
+                                                    pk_data.name.clone(),
+                                                    match pk_data.form_name.as_str() {
+                                                        "null" => "".to_string(),
+                                                        _ => pk_data.form_name.clone(),
+                                                    },
+                                                )
+                                            }
+                                        </h3>
                                         <div class={ search_pk_div_style.clone() }>
                                             <p class={ search_pk_label_p_style.clone() }>{ "タイプ:" }</p>
                                             <p class={ search_type_p_style.clone() } style={
@@ -488,44 +500,44 @@ pub fn search_pokemon() -> Html {
                                                     }
                                                 }
                                             {
-                                                format!("　({}{}{}{}{})",
+                                                format!("　( {}{}{}{}{})",
                                                     {
                                                         match pk_data.nature_a.as_str() {
-                                                            "1" => "A: ↑".to_string(),
+                                                            "1" => "攻撃: ↑ ".to_string(),
                                                             "0" => "".to_string(),
-                                                            "-1" => "A: ↓".to_string(),
+                                                            "-1" => "攻撃: ↓ ".to_string(),
                                                             _ => "".to_string(),
                                                         }
                                                     },
                                                     {
                                                         match pk_data.nature_b.as_str() {
-                                                            "1" => "B: ↑".to_string(),
+                                                            "1" => "防御: ↑ ".to_string(),
                                                             "0" => "".to_string(),
-                                                            "-1" => "B: ↓".to_string(),
+                                                            "-1" => "防御: ↓ ".to_string(),
                                                             _ => "".to_string(),
                                                         }
                                                     },
                                                     {
                                                         match pk_data.nature_c.as_str() {
-                                                            "1" => "C: ↑".to_string(),
+                                                            "1" => "特攻: ↑ ".to_string(),
                                                             "0" => "".to_string(),
-                                                            "-1" => "C: ↓".to_string(),
+                                                            "-1" => "特攻: ↓ ".to_string(),
                                                             _ => "".to_string(),
                                                         }
                                                     },
                                                     {
                                                         match pk_data.nature_d.as_str() {
-                                                            "1" => "D: ↑".to_string(),
+                                                            "1" => "特防: ↑ ".to_string(),
                                                             "0" => "".to_string(),
-                                                            "-1" => "D: ↓".to_string(),
+                                                            "-1" => "特防: ↓ ".to_string(),
                                                             _ => "".to_string(),
                                                         }
                                                     },
                                                     {
                                                         match pk_data.nature_s.as_str() {
-                                                            "1" => "S: ↑".to_string(),
+                                                            "1" => "素早さ: ↑ ".to_string(),
                                                             "0" => "".to_string(),
-                                                            "-1" => "S: ↓".to_string(),
+                                                            "-1" => "素早さ: ↓ ".to_string(),
                                                             _ => "".to_string(),
                                                         }
                                                     }
@@ -551,31 +563,31 @@ pub fn search_pokemon() -> Html {
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("A: {:.0}",
+                                                    format!("攻撃: {:.0}",
                                                     ( ((((pk_data.base_stat_a.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_a.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_a.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_a.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("B: {:.0}",
+                                                    format!("防御: {:.0}",
                                                     ( ((((pk_data.base_stat_b.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_b.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_b.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_b.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("C: {:.0}",
+                                                    format!("特攻: {:.0}",
                                                     ( ((((pk_data.base_stat_c.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_c.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_c.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_c.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("D: {:.0}",
+                                                    format!("特防: {:.0}",
                                                     ( ((((pk_data.base_stat_d.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_d.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_d.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_d.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("S: {:.0}",
+                                                    format!("素早さ: {:.0}",
                                                     ( ((((pk_data.base_stat_s.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_s.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_s.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_s.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
                                                 )}
                                             </p>
@@ -591,31 +603,31 @@ pub fn search_pokemon() -> Html {
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("A: {}",
+                                                    format!("攻撃: {}",
                                                     pk_data.individual_values_a.clone()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("B: {}",
+                                                    format!("防御: {}",
                                                     pk_data.individual_values_b.clone()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("C: {}",
+                                                    format!("特攻: {}",
                                                     pk_data.individual_values_c.clone()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("D: {}",
+                                                    format!("特防: {}",
                                                     pk_data.individual_values_d.clone()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("S: {}",
+                                                    format!("素早さ: {}",
                                                     pk_data.individual_values_s.clone()
                                                 )}
                                             </p>
@@ -631,31 +643,31 @@ pub fn search_pokemon() -> Html {
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("A: {}",
+                                                    format!("攻撃: {}",
                                                     pk_data.effort_values_a.clone()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("B: {}",
+                                                    format!("防御: {}",
                                                     pk_data.effort_values_b.clone()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("C: {}",
+                                                    format!("特攻: {}",
                                                     pk_data.effort_values_c.clone()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("D: {}",
+                                                    format!("特防: {}",
                                                     pk_data.effort_values_d.clone()
                                                 )}
                                             </p>
                                             <p class={ search_pk_value_p_style.clone() }>
                                                 {
-                                                    format!("S: {}",
+                                                    format!("素早さ: {}",
                                                     pk_data.effort_values_s.clone()
                                                 )}
                                             </p>

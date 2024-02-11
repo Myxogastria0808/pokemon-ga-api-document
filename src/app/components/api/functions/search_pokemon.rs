@@ -672,61 +672,6 @@ pub fn search_pokemon() -> Html {
                                                 )}
                                             </p>
                                         </div>
-                                        // <div class={ search_pk_div_style.clone() }>{ "a: " }<b>{
-                                        //     format!("{:.0}",
-                                        //     ( ((((pk_data.base_stat_a.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_a.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_a.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_a.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        // )}</b>
-                                        // </div>
-
-                                        // <div class={ search_pk_div_style.clone() }>{ "b: " }<b>{
-                                        //     format!("{:.0}",
-                                        //     ( ((((pk_data.base_stat_b.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_b.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_b.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_b.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        // )}</b>
-                                        // </div>
-
-                                        // <div class={ search_pk_div_style.clone() }>{ "c: " }<b>{
-                                        //     format!("{:.0}",
-                                        //     ( ((((pk_data.base_stat_c.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_c.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_c.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_c.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        // )}</b>
-                                        // </div>
-
-                                        // <div class={ search_pk_div_style.clone() }>{ "d: " }<b>{
-                                        //     format!("{:.0}",
-                                        //     ( ((((pk_data.base_stat_d.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_d.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_d.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_d.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        // )}</b>
-                                        // </div>
-
-                                        // <div class={ search_pk_div_style.clone() }>{ "s: " }<b>{
-                                        //     format!("{:.0}",
-                                        //     ( ((((pk_data.base_stat_s.clone()).parse::<f64>().unwrap() * 2.0 + (pk_data.individual_values_s.clone()).parse::<f64>().unwrap() + ((pk_data.effort_values_s.clone()).parse::<f64>().unwrap() / 4.0).floor()) / 2.0).floor() + 5.0) * (1.0 + ((pk_data.nature_s.clone()).parse::<f64>().unwrap() * 0.1)) ).floor()
-                                        // )}</b>
-                                        // </div>
-
-                                        // <p>{ "base_stat_h: " }<b>{ pk_data.base_stat_h.clone() }</b></p>
-                                        // <p>{ "base_stat_a: " }<b>{ pk_data.base_stat_a.clone() }</b></p>
-                                        // <p>{ "base_stat_b: " }<b>{ pk_data.base_stat_b.clone() }</b></p>
-                                        // <p>{ "base_stat_c: " }<b>{ pk_data.base_stat_c.clone() }</b></p>
-                                        // <p>{ "base_stat_d: " }<b>{ pk_data.base_stat_d.clone() }</b></p>
-                                        // <p>{ "base_stat_s: " }<b>{ pk_data.base_stat_s.clone() }</b></p>
-                                        // <p>{ "base_stat_all: " }<b>{ pk_data.base_stat_all.clone() }</b></p>
-                                        // <p>{ "individual_values_h: " }<b>{ pk_data.individual_values_h.clone() }</b></p>
-                                        // <p>{ "individual_values_a: " }<b>{ pk_data.individual_values_a.clone() }</b></p>
-                                        // <p>{ "individual_values_b: " }<b>{ pk_data.individual_values_b.clone() }</b></p>
-                                        // <p>{ "individual_values_c: " }<b>{ pk_data.individual_values_c.clone() }</b></p>
-                                        // <p>{ "individual_values_d: " }<b>{ pk_data.individual_values_d.clone() }</b></p>
-                                        // <p>{ "individual_values_s: " }<b>{ pk_data.individual_values_s.clone() }</b></p>
-                                        // <p>{ "effort_values_h: " }<b>{ pk_data.effort_values_h.clone() }</b></p>
-                                        // <p>{ "effort_values_a: " }<b>{ pk_data.effort_values_a.clone() }</b></p>
-                                        // <p>{ "effort_values_b: " }<b>{ pk_data.effort_values_b.clone() }</b></p>
-                                        // <p>{ "effort_values_c: " }<b>{ pk_data.effort_values_c.clone() }</b></p>
-                                        // <p>{ "effort_values_d: " }<b>{ pk_data.effort_values_d.clone() }</b></p>
-                                        // <p>{ "effort_values_s: " }<b>{ pk_data.effort_values_s.clone() }</b></p>
-                                        // <p>{ "nature_a: " }<b>{ pk_data.nature_a.clone() }</b></p>
-                                        // <p>{ "nature_b: " }<b>{ pk_data.nature_b.clone() }</b></p>
-                                        // <p>{ "nature_c: " }<b>{ pk_data.nature_c.clone() }</b></p>
-                                        // <p>{ "nature_d: " }<b>{ pk_data.nature_d.clone() }</b></p>
-                                        // <p>{ "nature_s: " }<b>{ pk_data.nature_s.clone() }</b></p>
-
                                         <br />
                                         <br />
                                         <br />

@@ -54,19 +54,22 @@ pub fn card_flied() -> Html {
                 </h1>
                 <div class={card_field_flex_style}>
                     <Card
-                        title="/pokemon"
+                        title="pokemon"
+                        title_size=35
                         content="登録されているポケモンの詳細情報を得ることができる。"
                         url="/pokemon-ga-api-document/pokemon"
                         img="https://raw.githubusercontent.com/pokemon-GA/pokemon-ga-api-document/main/assets/img/pexels-pixabay-206359.webp"
                     />
                     <Card
-                        title="/latest"
+                        title="latest"
+                        title_size=35
                         content="計算が終了している世代の中で最新の世代の情報を取得できる。"
                         url="/pokemon-ga-api-document"
                         img="https://raw.githubusercontent.com/pokemon-GA/pokemon-ga-api-document/main/assets/img/pexels-quang-nguyen-vinh-2131801.webp"
                     />
                     <Card
-                        title="/generation"
+                        title="generation"
+                        title_size=35
                         content="計算が終了している過去の世代の情報を取得できる。"
                         url="/pokemon-ga-api-document/generation"
                         img="https://raw.githubusercontent.com/pokemon-GA/pokemon-ga-api-document/main/assets/img/pexels-konevi-1335115.webp"

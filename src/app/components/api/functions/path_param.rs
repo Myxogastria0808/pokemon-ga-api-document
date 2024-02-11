@@ -1,8 +1,14 @@
 use stylist::style;
 use yew::prelude::*;
 
-#[function_component(Query)]
-pub fn query() -> Html {
+#[derive(Properties, PartialEq)]
+pub struct PathParamContent {
+    pub title: String,
+    pub path: String,
+    pub content: String,
+}
+#[function_component(PathParam)]
+pub fn path_param(props: &PathParamContent) -> Html {
     let query_h1_style = style!(
         r#"
             text-align:center;
@@ -35,13 +41,10 @@ pub fn query() -> Html {
 
     html! {
         <>
-            <h1 class={query_h1_style}>{ "取得するパーティ数を絞る" }</h1>
-            <h2 class={query_h2_style}>{ "?higher={higher}&lower={lower}" }</h2>
+            <h1 class={query_h1_style}>{ props.title.clone() }</h1>
+            <h2 class={query_h2_style}>{ props.path.clone() }</h2>
             <p class={query_p_style}>
-                {"
-                    / と /generation/{generation} には、上位何位(higher)から下位何位(lower)までのパーティ数を取得するという指定ができる。
-                    何も指定しない場合は、1位から10位まで(?higher=1&lower=10)を取得するようになっている。
-                "}
+                { props.content.clone() }
             </p>
         </>
     }

@@ -1,5 +1,6 @@
 use archive::Archive;
 use latest::Latest;
+use path_param::PathParam;
 use query::Query;
 use search_pokemon::SearchPokemon;
 use stylist::style;
@@ -7,6 +8,7 @@ use yew::prelude::*;
 
 mod archive;
 mod latest;
+mod path_param;
 mod query;
 mod search_pokemon;
 
@@ -71,8 +73,13 @@ pub fn fnctions(props: &Api) -> Html {
         if api_types == *"archive" {
                 <Design
                     url={"https://pokemon-ga-api.yukiosada.work/docs#/default/generation_generation__generation__get"}
-                    path={"/generation"}
+                    path={"/generation/{integer}"}
                     title={"過去の世代"}
+                />
+                <PathParam
+                    title={"世代数を指定する"}
+                    path={"/generation/{integer}"}
+                    content={"世代数の指定は、必ずしてください。第1世代から計算が終了している最新の世代の間で、どれか1つの世代を指定してください。"}
                 />
                 <Query />
                 <Archive />
@@ -87,8 +94,13 @@ pub fn fnctions(props: &Api) -> Html {
             } else if api_types == *"search_pokemon" {
                 <Design
                     url={"https://pokemon-ga-api.yukiosada.work/docs#/default/search_pokemon_pokemon__pokemon__get"}
-                    path={"/pokemon"}
+                    path={"/pokemon/{string}"}
                     title={ "Pokémonの検索" }
+                />
+                <PathParam
+                    title={"ポケモンの名前を指定する"}
+                    path={"/generation/{string}"}
+                    content={"ポケモンの名前を指定してください。その際、ポケモンの名前は全角カタカナで指定してください。"}
                 />
                 <SearchPokemon />
             } else {

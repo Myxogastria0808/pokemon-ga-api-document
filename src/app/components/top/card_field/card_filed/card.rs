@@ -29,6 +29,7 @@ impl Route {
 #[derive(Properties, PartialEq)]
 pub struct CardContent {
     pub title: String,
+    pub title_size: usize,
     pub content: String,
     pub url: String,
     pub img: String,
@@ -53,7 +54,6 @@ pub fn card(props: &CardContent) -> Html {
         r#"
             font-family: 'Itim', cursive;
             color: #fff;
-            font-size:35px;
             padding-top:15px;
             padding-bottom:25px;
             text-align:center;
@@ -107,7 +107,7 @@ pub fn card(props: &CardContent) -> Html {
                     class={card_style}
                     style={ format!("background-image: url({})", props.img.clone()) }
                 >
-                    <h1 class={card_h1_style}>{ props.title.clone() }</h1>
+                    <h1 class={card_h1_style} style={ format!("font-size: {}px", props.title_size.clone()) }>{ props.title.clone() }</h1>
                     <p class={card_p_style}>{ props.content.clone() }</p>
                     <button class={card_button_style} style="cursor:pointer;" onclick={onclick}>{ "Detail" }</button>
                 </div>

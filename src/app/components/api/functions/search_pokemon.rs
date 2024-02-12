@@ -291,28 +291,16 @@ pub fn search_pokemon() -> Html {
                 </div>
             </form>
             <p class={ quote_style }>{ "タイプ、テラタイプの色の引用元: https://www.pokemon.co.jp/ex/sun_moon/fight/161215_01.html" }</p>
-            <p class={ info_style.clone() }>{ "※以下の情報は、上記のURLから取得できる情報の一部であることを理解の上、ご利用ください。" }</p>
-            <p class={ info_style.clone() }>{ "※実数値をそのまま取得することはできません。ご注意ください。" }</p>
+            <p class={ info_style.clone() }>{ "※以下の情報は、上記のURLから取得できる情報の一部であることを理解の上、ご利用ください。" }<br />{ "※実数値をそのまま取得することはできません。ご注意ください。" }</p>
             {
                 if state.loading {
                     html! { <p>{ "Loading, wait a sec..." }</p> }
-                } else {
-                    html! {}
-                }
-            }
-            {
-                if let Some(error) = &state.error {
+                } else if let Some(error) = &state.error {
                     match error {
                         Error::DeserializeError => html! { <p class={ info_style }>{ "登録されているポケモンの名前を正確に入力してください。" }</p> },
                         Error::RequestError => html! {<p>{ "RequestError" }</p> },
                     }
-                } else {
-                    html! {}
-                }
-            }
-            <div class={search_space_style}></div>
-            {
-                if let Some(pokemon) = &state.data {
+                } else if let Some(pokemon) = &state.data {
                     html! {
                         <>
                             <ul class={ul_color_pokemon_style}>
@@ -686,6 +674,7 @@ pub fn search_pokemon() -> Html {
                     html! {}
                 }
             }
+            <div class={search_space_style}></div>
         </>
     }
 }

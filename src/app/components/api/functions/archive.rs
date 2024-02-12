@@ -325,7 +325,6 @@ pub fn archive() -> Html {
                     html! {}
                 }
             }
-            <div class={search_space_style}></div>
             <div class={string_color_style}>
                 {
                     if let Some(max_generation) = &pre_state.data {
@@ -334,53 +333,56 @@ pub fn archive() -> Html {
                                 Error::DeserializeError => html! { <p>{ format!("世代数は、1 から {} の間で入力してください。", max_generation.generation) }</p> },
                                 Error::RequestError => html! { <p>{ "RequestError" }</p> },
                             }
+                        } else if let Some(pokemon) = &state.data {
+                                html! {
+                                    <>
+                                        <h1 class={latest_ranking_style.clone()}>{ "ランキング" }</h1>
+                                        <div class={latest_ranking_space_style}></div>
+
+                                        <ul>
+                                            {(pokemon.ranking).iter().map(|data| html! {
+                                                <>
+                                                    <div class={caption_box_style.clone()}>
+                                                        <li class={latest_li_style.clone()}>
+                                                            <h2 class={latest_rank_style.clone()}>{ format!("{}位", data.rank) }</h2>
+                                                            <h2 class={latest_score_style.clone()}>{ format!("得点: {}点", data.score) }</h2>
+                                                            <h3 class={latest_rank_party_title_style.clone()}>{"＜パーティ＞"}</h3>
+                                                            <h3 class={latest_rank_party_style.clone()}>
+                                                                {(data.party).iter().map(|member| html! {
+                                                                    <span class={party_member_style.clone()}>
+                                                                        { format!("{}", member.name.clone()) }
+                                                                        {
+                                                                            if member.form_name.clone() == "null" {
+                                                                                {"".to_string()}
+                                                                            } else {
+                                                                                { format!(" {}", member.form_name.clone()) }
+                                                                            }
+                                                                        }
+                                                                    </span>
+                                                                }).collect::<Html>()}
+                                                            </h3>
+                                                        </li>
+                                                    </div>
+                                                    <div class={latest_rank_party_div_style.clone()}></div>
+                                                </>
+                                            }).collect::<Html>()}
+                                        </ul>
+                                    </>
+                                }
                         } else {
                             html! {}
                         }
-                    } else { html! { <p>{ "RequestError" }</p> } }
-                }
-                {
-                    if let Some(pokemon) = &state.data {
-                        html! {
-                            <>
-                                <h1 class={latest_ranking_style.clone()}>{ "ランキング" }</h1>
-                                <div class={latest_ranking_space_style}></div>
-
-                                <ul>
-                                    {(pokemon.ranking).iter().map(|data| html! {
-                                        <>
-                                            <div class={caption_box_style.clone()}>
-                                                <li class={latest_li_style.clone()}>
-                                                    <h2 class={latest_rank_style.clone()}>{ format!("{}位", data.rank) }</h2>
-                                                    <h2 class={latest_score_style.clone()}>{ format!("得点: {}点", data.score) }</h2>
-                                                    <h3 class={latest_rank_party_title_style.clone()}>{"＜パーティ＞"}</h3>
-                                                    <h3 class={latest_rank_party_style.clone()}>
-                                                        {(data.party).iter().map(|member| html! {
-                                                            <span class={party_member_style.clone()}>
-                                                                { format!("{}", member.name.clone()) }
-                                                                {
-                                                                    if member.form_name.clone() == "null" {
-                                                                        {"".to_string()}
-                                                                    } else {
-                                                                        { format!(" {}", member.form_name.clone()) }
-                                                                    }
-                                                                }
-                                                            </span>
-                                                        }).collect::<Html>()}
-                                                    </h3>
-                                                </li>
-                                            </div>
-                                            <div class={latest_rank_party_div_style.clone()}></div>
-                                        </>
-                                    }).collect::<Html>()}
-                                </ul>
-                            </>
+                    } else if let Some(error) = &pre_state.error {
+                        match error {
+                            Error::DeserializeError => html! { <p>{ "DeserializeError" }</p> },
+                            Error::RequestError => html! { <p>{ "RequestError" }</p> },
                         }
                     } else {
                         html! {}
                     }
                 }
             </div>
+            <div class={search_space_style}></div>
         </>
     }
 }

@@ -1,6 +1,6 @@
 @echo off
 
-trunk build --release
+trunk build --release --public-url pokemon-ga-api-document
 cd dist
 git init
 git add .

@@ -36,7 +36,7 @@ struct Ranking {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 struct JsonParce {
-    generation: usize,
+    generation: u64,
     ranking: Vec<Ranking>,
 }
 
@@ -50,7 +50,7 @@ enum Error {
 
 #[function_component(Archive)]
 pub fn archive() -> Html {
-    let generation = use_state(|| 1);
+    let generation: UseStateHandle<u64> = use_state(|| 1);
 
     let onchange = {
         let generation = generation.clone();
@@ -281,9 +281,27 @@ pub fn archive() -> Html {
                                 <h1 class={archive_latest_generation_style}>
                                     { (now_max_generation.generation).to_string().clone() }
                                 </h1>
-                                <h1 class={archive_url_style}>
-                                    { format!("https://pokemon-ga-api.yukiosada.work/generation/{}?higher=1&lower=10", *generation.clone()) }
-                                </h1>
+                                {
+                                    if let Some(max_generation) = (pre_state.data).clone() {
+                                        if let Some(error) = &state.error {
+                                            match error {
+                                                Error::DeserializeError => html! { <h1 class={archive_url_style}>{ "Bad Request" }</h1> },
+                                                Error::RequestError => html! { <p>{ "RequestError" }</p> },
+                                            }
+                                        } else if *generation.clone() > max_generation.generation {
+                                            html! { <h1 class={archive_url_style}>{ "Bad Request" }</h1> }
+                                        } else {
+                                            html! { <h1 class={archive_url_style}>{ format!("https://pokemon-ga-api.yukiosada.work/generation/{}?higher=1&lower=10", *generation.clone()) }</h1> }
+                                        }
+                                    } else if let Some(error) = &pre_state.error {
+                                        match error {
+                                            Error::DeserializeError => html! { <p>{ "DeserializeError" }</p> },
+                                            Error::RequestError => html! { <p>{ "RequestError" }</p> },
+                                        }
+                                    } else {
+                                        html! {}
+                                    }
+                                }
                                 <form>
                                     <div class={archive_div_style}>
                                         <input class={archive_input_style} type="numeric" inputmode="numeric" onchange={onchange} min="1" max={(now_max_generation.generation).to_string()} step="1" placeholder="世代数を入力" />
@@ -299,9 +317,27 @@ pub fn archive() -> Html {
                                 <h1 class={archive_latest_generation_style}>
                                     { (max_generation.generation).to_string().clone() }
                                 </h1>
-                                <h1 class={archive_url_style}>
-                                    { format!("https://pokemon-ga-api.yukiosada.work/generation/{}?higher=1&lower=10", *generation.clone()) }
-                                </h1>
+                                {
+                                    if let Some(max_generation) = (pre_state.data).clone() {
+                                        if let Some(error) = &state.error {
+                                            match error {
+                                                Error::DeserializeError => html! { <h1 class={archive_url_style}>{ "Bad Request" }</h1> },
+                                                Error::RequestError => html! { <p>{ "RequestError" }</p> },
+                                            }
+                                        } else if *generation.clone() > max_generation.generation {
+                                            html! { <h1 class={archive_url_style}>{ "Bad Request" }</h1> }
+                                        } else {
+                                            html! { <h1 class={archive_url_style}>{ format!("https://pokemon-ga-api.yukiosada.work/generation/{}?higher=1&lower=10", *generation.clone()) }</h1> }
+                                        }
+                                    } else if let Some(error) = &pre_state.error {
+                                        match error {
+                                            Error::DeserializeError => html! { <p>{ "DeserializeError" }</p> },
+                                            Error::RequestError => html! { <p>{ "RequestError" }</p> },
+                                        }
+                                    } else {
+                                        html! {}
+                                    }
+                                }
                                 <form>
                                     <div class={archive_div_style}>
                                         <input class={archive_input_style} type="number" onchange={onchange} id="generation" min="1" max={(max_generation.generation).to_string()} step="1" placeholder="世代数を入力" />

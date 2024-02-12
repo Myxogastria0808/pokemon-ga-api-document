@@ -56,7 +56,7 @@ pub fn archive() -> Html {
         let generation = generation.clone();
         Callback::from(move |e: Event| {
             let input: HtmlInputElement = e.target_unchecked_into();
-            generation.set(input.value().parse().expect("This value is not integer"));
+            generation.set(input.value().parse().unwrap_or(0));
         })
     };
 
@@ -316,11 +316,11 @@ pub fn archive() -> Html {
                 }
             }
             {
-                html! {<p class={info_style}>{ "※以下の情報は、上記のURLから取得できる情報の一部であることを理解の上、ご利用ください。" }</p>}
+                html! {<p class={info_style.clone()}>{ "※以下の情報は、上記のURLから取得できる情報の一部であることを理解の上、ご利用ください。" }</p>}
             }
             {
                 if state.loading {
-                    html! {<p>{ "Loading, wait a sec..." }</p> }
+                    html! {<p class={info_style}>{ "Loading, wait a sec..." }</p> }
                 } else {
                     html! {}
                 }
@@ -330,7 +330,7 @@ pub fn archive() -> Html {
                     if let Some(max_generation) = &pre_state.data {
                         if let Some(error) = &state.error {
                             match error {
-                                Error::DeserializeError => html! { <p>{ format!("世代数は、1 から {} の間で入力してください。", max_generation.generation) }</p> },
+                                Error::DeserializeError => html! { <p>{ format!("1 から {} の間の整数を入力してください。", max_generation.generation) }</p> },
                                 Error::RequestError => html! { <p>{ "RequestError" }</p> },
                             }
                         } else if let Some(pokemon) = &state.data {

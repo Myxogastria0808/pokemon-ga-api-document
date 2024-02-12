@@ -292,6 +292,7 @@ pub fn search_pokemon() -> Html {
             </form>
             <p class={ quote_style }>{ "タイプ、テラタイプの色の引用元: https://www.pokemon.co.jp/ex/sun_moon/fight/161215_01.html" }</p>
             <p class={ info_style.clone() }>{ "※以下の情報は、上記のURLから取得できる情報の一部であることを理解の上、ご利用ください。" }</p>
+            <p class={ info_style.clone() }>{ "※実数値をそのまま取得することはできません。ご注意ください。" }</p>
             {
                 if state.loading {
                     html! { <p>{ "Loading, wait a sec..." }</p> }

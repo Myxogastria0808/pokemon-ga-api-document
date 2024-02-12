@@ -2,6 +2,7 @@ use archive::Archive;
 use latest::Latest;
 use path_param::PathParam;
 use query::Query;
+use real_number::RealNumber;
 use search_pokemon::SearchPokemon;
 use stylist::style;
 use yew::prelude::*;
@@ -10,6 +11,7 @@ mod archive;
 mod latest;
 mod path_param;
 mod query;
+mod real_number;
 mod search_pokemon;
 
 #[derive(Properties, PartialEq)]
@@ -102,6 +104,7 @@ pub fn fnctions(props: &Api) -> Html {
                     path={"/pokemon/{string}"}
                     content={"ポケモンの名前を指定してください。その際、ポケモンの名前は全角カタカナで指定してください。"}
                 />
+                <RealNumber />
                 <SearchPokemon />
             } else {
                 <p>{ "Function Props is missing!" }</p>

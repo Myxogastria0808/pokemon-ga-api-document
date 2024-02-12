@@ -317,7 +317,7 @@ pub fn search_pokemon() -> Html {
                             <ul class={ul_color_pokemon_style}>
                                 {(pokemon.data).iter().map(|pk_data| html! {
                                     <li class={list_pokemon_style.clone()}>
-                                        <p class={ search_pokedex_no_p_style.clone() }>{ format!("No.{}", pk_data.pokedex_no.clone()) }</p>
+                                        <p class={ search_pokedex_no_p_style.clone() }>{ format!("図鑑No.{}", pk_data.pokedex_no.clone()) }</p>
                                         <h3 class={ search_pokemon_name_style.clone() }>
                                             {
                                                 format!(
@@ -547,9 +547,9 @@ pub fn search_pokemon() -> Html {
                                         </div>
                                         <div class={ search_pk_div_style.clone() }>
                                             <p class={ search_pk_label_p_style.clone() }>{ "技:" }</p>
-                                            <p class={ search_move_p_style.clone() }>{ format!("{}、", pk_data.move_1.name.clone()) }</p>
-                                            <p class={ search_move_p_style.clone() }>{ format!("{}、", pk_data.move_2.name.clone()) }</p>
-                                            <p class={ search_move_p_style.clone() }>{ format!("{}、", pk_data.move_3.name.clone()) }</p>
+                                            <p class={ search_move_p_style.clone() }>{ format!("{}　", pk_data.move_1.name.clone()) }</p>
+                                            <p class={ search_move_p_style.clone() }>{ format!("{}　", pk_data.move_2.name.clone()) }</p>
+                                            <p class={ search_move_p_style.clone() }>{ format!("{}　", pk_data.move_3.name.clone()) }</p>
                                             <p class={ search_move_p_style.clone() }>{ format!("{}", pk_data.move_4.name.clone()) }</p>
                                         </div>
 

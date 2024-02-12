@@ -99,7 +99,7 @@ pub fn fnctions(props: &Api) -> Html {
                 />
                 <PathParam
                     title={"ポケモンの名前を指定する"}
-                    path={"/generation/{string}"}
+                    path={"/pokemon/{string}"}
                     content={"ポケモンの名前を指定してください。その際、ポケモンの名前は全角カタカナで指定してください。"}
                 />
                 <SearchPokemon />
